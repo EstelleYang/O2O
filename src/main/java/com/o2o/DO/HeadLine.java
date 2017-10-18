@@ -1,7 +1,9 @@
 package com.o2o.DO;
 
-import java.util.Date;
+import org.springframework.stereotype.Component;
 
+import java.util.Date;
+@Component
 public class HeadLine {
     private Long lineId;
     private String lineName;
