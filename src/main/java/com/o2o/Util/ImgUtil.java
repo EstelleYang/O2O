@@ -10,6 +10,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -41,22 +42,22 @@ public class ImgUtil {
     }
     /**
      * 处理缩略图，并返回新生成图片的相对路径
-     * @param thumbnail
+     * @param thumbnailStream
      * @param targerAddr
      * @return
      */
-    public static String generateThumbnail(File thumbnail,String targerAddr){
+    public static String generateThumbnail(InputStream thumbnailStream,String filename,String targerAddr){
         //生成随机文件名
         String realFileName = getRandomFileName();
         //生成文件扩展名
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(filename);
         makeDirPath(targerAddr);
         String relativeAddr = targerAddr+realFileName+extension;
         logger.debug("current relativeAddr is:"+relativeAddr);
         File dest = new File(PathUtil.getImgBasePath()+relativeAddr);
         logger.debug("current complete addr is:"+PathUtil.getImgBasePath()+relativeAddr);
         try{
-            Thumbnails.of(thumbnail)
+            Thumbnails.of(thumbnailStream)
                     .size(200,200)
                     .watermark(Positions.BOTTOM_RIGHT,ImageIO.read(new File(basePath+"/watermark.jpg")),0.25f)
                     .outputQuality(0.8f)
@@ -84,11 +85,9 @@ public class ImgUtil {
      * @param cFile
      * @return
      */
-    private static String getFileExtension(File cFile) {
-        //获取上传的图片文件名
-        String originalFileName = cFile.getName();
+    private static String getFileExtension(String cFile) {
         //获取扩展名
-        return originalFileName.substring(originalFileName.lastIndexOf("."));
+        return cFile.substring(cFile.lastIndexOf("."));
     }
 
     /**
