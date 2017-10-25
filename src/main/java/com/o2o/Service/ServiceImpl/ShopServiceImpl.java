@@ -9,11 +9,12 @@ import com.o2o.Util.ImgUtil;
 import com.o2o.Util.PathUtil;
 import com.o2o.enums.ShopStateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
-
+@Service
 public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopDao shopDao;
